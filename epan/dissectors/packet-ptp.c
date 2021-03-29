@@ -2650,7 +2650,7 @@ dissect_ptp_v2(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gboolean ptp
         }
     }
 
-   if (tree) {
+    if (tree) {
 
         ti = proto_tree_add_item(tree, proto_ptp, tvb, 0, -1, ENC_NA);
 
