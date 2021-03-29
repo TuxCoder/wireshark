@@ -10,6 +10,7 @@
  * Copyright 2013, Andreas Bachmann <bacr@zhaw.ch>, ZHAW/InES
  * Copyright 2016, Uli Heilmeier <uh@heilmeier.eu>
  * Copyright 2017, Adam Wujek <adam.wujek@cern.ch>
+ * Copyright 2021, Norbert Summer <norbert.summer@oregano.at>
  *
  * Revisions:
  * - Markus Seehofer 09.08.2005 <mseehofe@nt.hirschmann.de>
@@ -2616,7 +2617,10 @@ dissect_ptp_v2(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gboolean ptp
             proto_len  = tvb_reported_length(tvb);
             tlv_offset = PTP_V2_SIG_TLV_START;
 
-            while (tlv_offset < proto_len)
+
+            // -2 is there because in IPv6 mode there are additional 2 bytes at the end of the message,
+            // this is a fix as it ties to parse a TLV with the lengh 2 bytes (what is obvious invalid)
+            while (tlv_offset < (proto_len-2))
             {
                 tlv_length   = tvb_get_ntohs(tvb, tlv_offset + PTP_V2_SIG_TLV_LENGTH_OFFSET);
                 tlv_type     = tvb_get_ntohs(tvb, tlv_offset + PTP_V2_SIG_TLV_TYPE_OFFSET);
